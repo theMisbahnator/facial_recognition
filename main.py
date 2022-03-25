@@ -7,7 +7,7 @@ import glob
 # i installed these libraries
 # pip install cmake face_recognition numpy opencv-python
 
-webcam = cv2.VideoCapture(0)
+# webcam = cv2.VideoCapture(0)
 
 
 def encode_image(path):
@@ -16,10 +16,15 @@ def encode_image(path):
     return img_encoding
 
 
-result = face_recognition.compare_faces([encode_image("faces/nabil.jpg")], encode_image("Misbah.jpg"))
-print("Result: ", result)
+# result = face_recognition.compare_faces([encode_image("faces/nabil.jpg")], encode_image("Misbah.jpg"))
+# print("Result: ", result)
 
 curPath = os.path.join(os.getcwd(), "faces/")
+registered_photos = glob.glob(curPath + '*.jpg')
+num_of_photos = len(registered_photos)
+names = registered_photos.copy()
+
+print(names)
 print(curPath)
 
 
