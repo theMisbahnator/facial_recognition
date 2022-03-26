@@ -13,7 +13,7 @@ def encode_image(path):
 
 
 def draw_rectangle(face_location, this_frame, name):
-    y1, x1, y2, x2 = face_location[0], face_location[1], face_location[2], face_location[3]
+    y1, x1, y2, x2 = face_location[0] * 10, face_location[1] * 10, face_location[2] * 10, face_location[3] * 10
     cv2.rectangle(this_frame, (x2, y1), (x1, y2), (0, 0, 255), 2)
     cv2.rectangle(this_frame, (x2, y2 - 35), (x1, y2), (0, 0, 255), cv2.FILLED)
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -21,7 +21,6 @@ def draw_rectangle(face_location, this_frame, name):
     return this_frame
 
 
-webcam = cv2.VideoCapture(0)
 curPath = os.path.join(os.getcwd(), "faces/")
 registered_photos = glob.glob(curPath + '*.jpg')
 num_of_photos = len(registered_photos)
@@ -33,15 +32,19 @@ for photos in registered_photos:
     names.append(str(photos).replace(curPath, "").replace('.jpg', ""))
     registered_encodings.append(encode_image(photos))
 
+doit = True
 
+webcam = cv2.VideoCapture(0)
 while True:
     # Display current frame
     ret, frame = webcam.read()
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
+    # Resize frame of video to 1/4 size for faster face recognition processing
+    small_frame = cv2.resize(frame, (0, 0), fx=0.1, fy=0.1)
+    # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
+    rgb_small_frame = small_frame[:, :, ::-1]
     # locate and encode all faces on the frame (could be more than one face detected)
-    face_locations = face_rec.face_locations(frame)
-    face_encodings = face_rec.face_encodings(frame, face_locations)
+    face_locations = face_rec.face_locations(rgb_small_frame)
+    face_encodings = face_rec.face_encodings(rgb_small_frame, face_locations)
 
     # take current encoding and face location on frame, compare it to all known encodings
     for cur_face_location, cur_face_encoding in zip(face_locations, face_encodings):
