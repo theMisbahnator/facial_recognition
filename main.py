@@ -1,5 +1,5 @@
 import cv2
-import face_recognition
+import face_recognition as fr
 import numpy as np
 import os
 import glob
@@ -7,12 +7,12 @@ import glob
 # i installed these libraries
 # pip install cmake face_recognition numpy opencv-python
 
-# webcam = cv2.VideoCapture(0)
+webcam = cv2.VideoCapture(0)
 
 
 def encode_image(path):
     img = cv2.cvtColor(cv2.imread(path), cv2.COLOR_BGR2RGB)
-    img_encoding = face_recognition.face_encodings(img)[0]
+    img_encoding = fr.face_encodings(img)[0]
     return img_encoding
 
 
@@ -22,22 +22,33 @@ def encode_image(path):
 curPath = os.path.join(os.getcwd(), "faces/")
 registered_photos = glob.glob(curPath + '*.jpg')
 num_of_photos = len(registered_photos)
-names = registered_photos.copy()
+names = []
+registered_encodings = []
 
-print(names)
-print(curPath)
+# saving and encoding known names
+for photos in registered_photos:
+    names.append(str(photos).replace(curPath, "").replace('.jpg', ""))
+    registered_encodings.append(encode_image(photos))
 
+# # code from Behic Guven
+# for i in range(num_of_photos):
+#     globals()['image_{}'.format(i)] = face_recognition.load_image_file(registered_photos[i])
+#     globals()['image_encoding_{}'.format(i)] = face_recognition.face_encodings(globals()['image_{}'.format(i)])[0]
+#     faces_encodings.append(globals()['image_encoding_{}'.format(i)])
 
+while True:
+    # Display current frame
+    ret, frame = webcam.read()
+    cv2.imshow("frame:", frame)
 
-# while True:
-#     ret, frame = webcam.read()
-#     cv2.imshow("frame:", frame)
-#
-#     # press q to exit
-#     if cv2.waitKey(1) & 0xFF == ord('q'):
-#         break
-#
-# webcam.release()
-# cv2.destroyAllWindows()
+    # encode all faces on the frame (could be more than one face detected)
+    face_encodings = fr.face_encodings(frame, fr.face_locations(frame))
+
+    # press q to exit
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+webcam.release()
+cv2.destroyAllWindows()
 
 # encode the image in order to compare it to other images
