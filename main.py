@@ -4,6 +4,7 @@ import numpy as np
 import os
 import glob
 import time
+import ThemeSong
 
 
 # takes an image and returns the image encoding
@@ -37,6 +38,13 @@ def encode_face_from_frames(face_locations, face_encodings, this_frame):
     return found_names
 
 
+name_to_song = {
+  "nabil": "https://www.youtube.com/watch?v=9o3f8WgE1Tk&ab_channel=SoundsFX",
+  "misbah": "https://www.youtube.com/watch?v=2D-ZO2rGcSA&ab_channel=GamingSoundFX",
+  "sarim": "1964",
+  "taha" : "https://www.youtube.com/watch?v=Pa46dQiIAuU&ab_channel=DyotakJosipa"
+}
+
 curPath = os.path.join(os.getcwd(), "faces/")
 registered_photos = glob.glob(curPath + '*.jpg')
 num_of_photos = len(registered_photos)
@@ -52,6 +60,9 @@ for photos in registered_photos:
     registered_encodings.append(encode_image(photos))
 
 webcam = cv2.VideoCapture(0)
+curName = ""
+curStreak = 0
+
 while True:
     # Display current frame
     ret, frame = webcam.read()
@@ -65,6 +76,16 @@ while True:
 
     match = encode_face_from_frames(face_locations, face_encodings, frame)
     print("found a match: ", match)
+    if len(match) > 0 and match[0] == curName:
+        curStreak = curStreak + 1
+        if curStreak == 2:
+            print("playing audio")
+            ThemeSong.play_audio(name_to_song[curName], 20)
+            curStreak = 0
+            curName = ""
+    else:
+        curStreak = 0
+        curName = "" if len(match) == 0 else match[0]
     cv2.imshow('Webcam_face_recognition', frame)
 
     # press q to exit, later integrate this functionality with an app

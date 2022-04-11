@@ -2,7 +2,7 @@ import vlc
 import pafy
 import time
 
-time_to_open_player = 5
+time_to_open_player = 0
 
 
 def set_up_audio(url):
