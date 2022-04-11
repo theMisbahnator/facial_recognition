@@ -25,9 +25,3 @@ def play_all_audio(url):
     while media.is_playing():
         time.sleep(1)
     media.stop()
-
-
-this_url = "https://www.youtube.com/watch?v=2D-ZO2rGcSA&ab_channel=GamingSoundFX"
-play_audio(this_url, 10)
-play_all_audio("https://www.youtube.com/watch?v=Mh99q7frpjI&ab_channel=BaraaMasoud%D8%A8%D8%B1%D8%A7%D8%A1%D9%85%D8%B3%D8%B9%D9%88%D8%AF")
-

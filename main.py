@@ -23,6 +23,20 @@ def draw_rectangle(face_location, this_frame, name, factor):
     return this_frame
 
 
+def encode_face_from_frames(face_locations, face_encodings, this_frame):
+    found_names = []
+    for cur_face_location, cur_face_encoding in zip(face_locations, face_encodings):
+        face_distance = face_rec.face_distance(registered_encodings, cur_face_encoding)
+        matches = face_rec.compare_faces(registered_encodings, cur_face_encoding, tolerance=0.5)
+        identified = "Unknown"
+        best_match_index = np.argmin(face_distance)
+        if matches[best_match_index]:
+            identified = names[best_match_index]
+            found_names.append(identified)
+        this_frame = draw_rectangle(cur_face_location, this_frame, identified, 2)
+    return found_names
+
+
 curPath = os.path.join(os.getcwd(), "faces/")
 registered_photos = glob.glob(curPath + '*.jpg')
 num_of_photos = len(registered_photos)
@@ -49,19 +63,8 @@ while True:
     face_locations = face_rec.face_locations(rgb_small_frame)
     face_encodings = face_rec.face_encodings(rgb_small_frame, face_locations)
 
-    # take current encoding and face location on frame, compare it to all known encodings
-    for cur_face_location, cur_face_encoding in zip(face_locations, face_encodings):
-        face_distance = face_rec.face_distance(registered_encodings, cur_face_encoding)
-        matches = face_rec.compare_faces(registered_encodings, cur_face_encoding)
-        identified = "Unknown"
-        best_match_index = np.argmin(face_distance)
-        if matches[best_match_index]:
-            identified = names[best_match_index]
-        frame = draw_rectangle(cur_face_location, frame, identified, 2)
-    curTime = time.time()
-    fps = 1 / (curTime - prevTime)
-    prevTime = curTime
-    print(fps)
+    match = encode_face_from_frames(face_locations, face_encodings, frame)
+    print("found a match: ", match)
     cv2.imshow('Webcam_face_recognition', frame)
 
     # press q to exit, later integrate this functionality with an app
