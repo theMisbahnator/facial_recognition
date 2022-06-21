@@ -3,7 +3,11 @@
 # import time
 
 from pytube import YouTube
-from playsound import playsound
+from moviepy.editor import *
+import os
+import pygame
+import time
+
 
 # used to appload mp4 files to the AWS
 # https://medium.com/bilesanmiahmad/how-to-upload-a-file-to-amazon-s3-in-python-68757a1867c6
@@ -51,25 +55,44 @@ helper methods
 - 
 '''
 
-def downloadVideo(url) :
+'''
+Used to download new theme songs at the registration of a 
+new user or the request to change to a new song from an 
+existing user.
+Param : 
+    url : url link to a song on youtube
+Returns: none
+Effects: placecs an mp4 audio file from youtube url within current directory
+'''
+def downloadVideo(url, userName) :
     # youtube object contains header info
     yt = YouTube(url)
     # filters for the best audio stream
-    someFiltering =  yt.streams.get_audio_only()
+    someFiltering =  yt.streams.filter(file_extension='mp4')[0]
     if someFiltering != None :
         print("Downloading!")
-        someFiltering.download()
+        someFiltering.download(filename=userName)
         return
     # failed to download
     print("ERROR: Audio Stream not Found!")
 
 
-playsound('mothToAFlame.mp4')
+print("plz help me")
 
 
-# downloadVideo('https://www.youtube.com/watch?v=u9n7Cw-4_HQ')
 
 
+#downloadVideo('https://www.youtube.com/watch?v=u9n7Cw-4_HQ', "poop.mp4")
+
+# video = VideoFileClip("./poop.mp4")
+# video.audio.write_audiofile("./poopy.mp3")
+
+pygame.mixer.init()
+pygame.mixer.music.load('poopy.mp3')
+pygame.mixer.music.play()
+
+while pygame.mixer.music.get_busy():  # wait for music to finish playing
+    time.sleep(1)
 
 
 
