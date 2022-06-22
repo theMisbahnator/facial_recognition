@@ -1,0 +1,8 @@
+# ignore library files
+facial_env
+
+# dont push any mp3 files
+*.mp3
+
+# dont push any image files
+*jpg
