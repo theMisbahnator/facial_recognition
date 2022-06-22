@@ -40,7 +40,7 @@ def encode_face_from_frames(face_locations, face_encodings, this_frame):
 
 name_to_song = {
   "nabil": "https://www.youtube.com/watch?v=9o3f8WgE1Tk&ab_channel=SoundsFX",
-  "misbah": "https://www.youtube.com/watch?v=2D-ZO2rGcSA&ab_channel=GamingSoundFX",
+  "misbah": "doYaLike",
   "sarim": "1964",
   "taha" : "https://www.youtube.com/watch?v=Pa46dQiIAuU&ab_channel=DyotakJosipa"
 }
@@ -80,7 +80,7 @@ while True:
         curStreak = curStreak + 1
         if curStreak == 2:
             print("playing audio")
-            ThemeSong.play_audio(name_to_song[curName], 20)
+            ThemeSong.playMusic(name_to_song[curName], 20)
             curStreak = 0
             curName = ""
     else:

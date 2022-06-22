@@ -14,46 +14,67 @@ import time
 
 # figure out how to deal with header information in MongoDB
 
-
 ''' 
-
 Structure of music system: 
 
 There are two components
 
 AWS S3 
-- stores all the mp4 files of audio registered in the music systen
+- stores all the mp3 files of audio registered in the music systen
+- stores all headshot encodings of users in the server
+- stores all encoding of images 
 
 MongoDB
-- stores all the meta data per entry along with the path to the song in AWS s3
+- stores name
+- stores images url located in aws s3
+- stores the the url/name of mp3 file
+- stores connection to encoding (or could be stored here)
+- stores song title
+- stores youtube url
+- stores date added
+- last modified
 
-Adding a New entry:
-- add meta data to mongoDB
-    - name of person
-    - location of image of person and file name in AWS S3
-- Add raw files to AWS S3
-    - user will be asked to upload a photo 
-    - user will be asked to provide a url to the theme song
-    - photo can just be transfered as a file
-    - url will be conveted into mp4 and transferred as such
 
-Modifiying an existing entry
-- modified meta data in mongoDB
-    - change image or music path based on change
-- update AWS S3
-    - delete original photo/song attached to entry
-    - add new data and transfer it to AWS S3
+Program starts
+1) get all encodings and corresponding names from mongo/AWS and store them in an array
+2) run the ML script on rasperry pi (the server side should not apply to this)
 
-Delete an entry
-- delete meta data from mongoDB
-- Delete data that correlates to entry in AWS S3
 
-helper methods
+During modification
 
-- playing audio
-- figuring if an entry has its data dowloaded
-- 
+Adding New User
+- newUser(name, attachAPhoto, urlToDesiredSong)
+- add to mongo
+- add to AWS S3
+
+Delete User
+- deleteUser(name)
+- delete entry in mongo
+- delete entry data in aws s3
+
+Change Song
+- changeSong(name, urlToNewSong)
+- modify url/name of mp3, song title, youtube url, last modified in mongo
+- add new song to aws s3
+- delete current song attached to user in aws s3
+
+Change Photo
+- changePhoto(name, newAttachedPhoto)
+- modify image url and last modified in mongo
+- add new image to aws s3
+- delete current image attached to user in aws s3
+
+Commands are accessable through Django and React interface
 '''
+
+
+'''
+Converts an MP4 file into an MP3 file within the current directory.
+Stores the result in the current directory
+'''
+def convertToMP3(fileName) :
+    video = VideoFileClip("./{}.mp4".format(fileName))
+    video.audio.write_audiofile("./{}.mp3".format(fileName))
 
 '''
 Used to download new theme songs at the registration of a 
@@ -65,60 +86,44 @@ Returns: none
 Effects: placecs an mp4 audio file from youtube url within current directory
 '''
 def downloadVideo(url, userName) :
+    print("Getting streams...")
     # youtube object contains header info
     yt = YouTube(url)
     # filters for the best audio stream
+    print("Filtering streams...")
     someFiltering =  yt.streams.filter(file_extension='mp4')[0]
     if someFiltering != None :
-        print("Downloading!")
-        someFiltering.download(filename=userName)
+        print("Downloading...")
+        someFiltering.download(filename="{}.mp4".format(userName))
+        print("Converting to mp3...")
+        convertToMP3(userName)
+        os.remove("{}.mp4".format(userName))
+        print("Done!")
         return
     # failed to download
     print("ERROR: Audio Stream not Found!")
 
 
-print("plz help me")
-
-
-
-
-#downloadVideo('https://www.youtube.com/watch?v=u9n7Cw-4_HQ', "poop.mp4")
-
-# video = VideoFileClip("./poop.mp4")
-# video.audio.write_audiofile("./poopy.mp3")
-
+'''
+Plays an mp3 file identified by the file name
+for a desired amout of time on device speakers
+Param :
+    fileName : name of mp3 file
+    playTime : desired amount of seconds to play song
+Returns: none
+Effects: plays audio on device speakers 
+'''
 pygame.mixer.init()
-pygame.mixer.music.load('poopy.mp3')
-pygame.mixer.music.play()
-
-while pygame.mixer.music.get_busy():  # wait for music to finish playing
-    time.sleep(1)
-
-
-
-
-
-
-
-# time_to_open_player = 0
-
-# def set_up_audio(url):
-#     video = pafy.new(url)
-#     best = video.getbestaudio()
-#     return vlc.MediaPlayer(best.url)
+def playMusic(fileName, playTime) :
+    pygame.mixer.music.load('{}.mp3'.format(fileName))
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():  
+         # plays music for desired amount of time
+         time.sleep(playTime) 
+         pygame.mixer.music.stop()
+         break
+    pygame.mixer.music.unload()
 
 
-# def play_audio(url, desired_time):
-#     media = set_up_audio(url)
-#     media.play()
-#     time.sleep(desired_time + time_to_open_player)
-#     media.stop()
-
-
-# def play_all_audio(url):
-#     media = set_up_audio(url)
-#     media.play()
-#     time.sleep(time_to_open_player)
-#     while media.is_playing():
-#         time.sleep(1)
-#     media.stop()
+# downloadVideo("https://www.youtube.com/watch?v=ae5iBHnuD0k&ab_channel=Smileyfacey", "doYaLike")
+# playMusic("doYaLike", 10)
