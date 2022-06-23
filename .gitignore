@@ -6,3 +6,6 @@ facial_env
 
 # dont push any image files
 *jpg
+
+# secret stuff
+sauce.py

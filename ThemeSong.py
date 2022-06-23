@@ -1,71 +1,29 @@
-# import vlc
-# import pafy
-# import time
-
 from pytube import YouTube
 from moviepy.editor import *
 import os
 import pygame
 import time
+import sauce
+import boto3
+import requests
+from botocore.exceptions import NoCredentialsError
 
-
-# used to appload mp4 files to the AWS
-# https://medium.com/bilesanmiahmad/how-to-upload-a-file-to-amazon-s3-in-python-68757a1867c6
-
-# figure out how to deal with header information in MongoDB
-
-''' 
-Structure of music system: 
-
-There are two components
-
-AWS S3 
-- stores all the mp3 files of audio registered in the music systen
-- stores all headshot encodings of users in the server
-- stores all encoding of images 
-
-MongoDB
-- stores name
-- stores images url located in aws s3
-- stores the the url/name of mp3 file
-- stores connection to encoding (or could be stored here)
-- stores song title
-- stores youtube url
-- stores date added
-- last modified
-
-
-Program starts
-1) get all encodings and corresponding names from mongo/AWS and store them in an array
-2) run the ML script on rasperry pi (the server side should not apply to this)
-
-
-During modification
-
-Adding New User
-- newUser(name, attachAPhoto, urlToDesiredSong)
-- add to mongo
-- add to AWS S3
-
-Delete User
-- deleteUser(name)
-- delete entry in mongo
-- delete entry data in aws s3
-
-Change Song
-- changeSong(name, urlToNewSong)
-- modify url/name of mp3, song title, youtube url, last modified in mongo
-- add new song to aws s3
-- delete current song attached to user in aws s3
-
-Change Photo
-- changePhoto(name, newAttachedPhoto)
-- modify image url and last modified in mongo
-- add new image to aws s3
-- delete current image attached to user in aws s3
-
-Commands are accessable through Django and React interface
 '''
+File like object that streams the mp3 file found in the 
+presigned url that allows access to mp3 files. 
+Provides a mechanism to listen to songs without 
+downloading them from AWS S3 buckets
+'''
+class Stream(object):
+    def __init__(self, url):
+        self._file = requests.get(url, stream=True)
+    def read(self, *args):
+        if args:
+            return self._file.raw.read(args[0])
+        else:
+            return self.file.raw.read()
+    def close(self):
+        self._file.close()
 
 
 '''
@@ -103,6 +61,52 @@ def downloadVideo(url, userName) :
     # failed to download
     print("ERROR: Audio Stream not Found!")
 
+'''
+Given an mp3 file name within the current directory, the method
+uploads to the file to the AWS S3 bucket. Notifies when an upload 
+fails due to credential/file not found errors. 
+Param:
+    fileName: mp3 file name 
+Returns: boolean value indicating result of upload
+Effects: uploads mp3 file to AWS
+'''
+def uploadFile(fileName) : 
+    s3 = boto3.client('s3', aws_access_key_id=sauce.AWS_ACCESS_KEY_ID, aws_secret_access_key=sauce.AWS_SECRET_ACCESS_KEY)
+    try:
+        s3.upload_file("{}.mp3".format(fileName), sauce.BUCKET_NAME, "{}.mp3".format(fileName))
+        print("Upload Successful")
+        return True
+    except FileNotFoundError:
+        print("The file was not found")
+        return False
+    except NoCredentialsError:
+        print("Credentials not available")
+        return False
+
+
+'''
+Given an mp3 file name, the method access the file through a presigned 
+url. Allows us to access the mp3 file through a get request without
+having to download the file. Returns the url link to the file. 
+Param:
+    fileName: mp3 file name 
+Returns: url link to the mp3 file
+Effects: none
+'''
+def getFile(fileName) :
+    session = boto3.Session()
+    s3 = session.client('s3', aws_access_key_id=sauce.AWS_ACCESS_KEY_ID , aws_secret_access_key=sauce.AWS_SECRET_ACCESS_KEY)
+    signedUrl = s3.generate_presigned_url(
+        ClientMethod="get_object",
+        ExpiresIn=1800,  # valid for 30 minutes
+        HttpMethod='GET',
+        Params={
+            "Bucket": "{}".format(sauce.BUCKET_NAME),
+            "Key": "{}.mp3".format(fileName),
+        }
+    )
+    return signedUrl
+
 
 '''
 Plays an mp3 file identified by the file name
@@ -113,17 +117,26 @@ Param :
 Returns: none
 Effects: plays audio on device speakers 
 '''
+pygame.init()
 pygame.mixer.init()
 def playMusic(fileName, playTime) :
-    pygame.mixer.music.load('{}.mp3'.format(fileName))
+    mp3Stream = Stream(getFile(fileName))
+    pygame.mixer.music.load(mp3Stream)
     pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():  
+    startTime = time.time()
+    while True:  
          # plays music for desired amount of time
-         time.sleep(playTime) 
-         pygame.mixer.music.stop()
-         break
+         curTime = time.time()
+         if playTime <= curTime - startTime : 
+             break
+    pygame.mixer.music.stop()
     pygame.mixer.music.unload()
 
 
-# downloadVideo("https://www.youtube.com/watch?v=ae5iBHnuD0k&ab_channel=Smileyfacey", "doYaLike")
+
+
+
+# downloadVideo("https://www.youtube.com/watch?v=iP6XpLQM2Cs&ab_channel=keshaVEVO", "kesha")
+# playMusic("kesha", 20)
 # playMusic("doYaLike", 10)
+# uploadFile("doYaLike")
