@@ -36,7 +36,7 @@ During modification
 Adding New User
 - newUser(name, attachAPhoto, urlToDesiredSong)
 - add to mongo
-- add to AWS S3
+- add to AWS S3  (DONE)
 
 Delete User
 - deleteUser(name)

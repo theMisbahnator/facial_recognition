@@ -1,3 +1,4 @@
+from cgi import test
 import cv2
 import face_recognition as face_rec
 import numpy as np
@@ -57,7 +58,16 @@ curTime = 1
 # saving and encoding known names
 for photos in registered_photos:
     names.append(str(photos).replace(curPath, "").replace('.jpg', ""))
-    registered_encodings.append(encode_image(photos))
+    encoding = encode_image(photos)
+    registered_encodings.append(encoding)
+
+# # test
+# a = registered_encodings[0]
+# print(a)
+# np.save("test1.npy", a)
+# d = np.load("test1.npy")
+# print(a == d)
+# # it works
 
 webcam = cv2.VideoCapture(0)
 curName = ""
