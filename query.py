@@ -54,7 +54,7 @@ def sqlModifySong(userID, mp3_fn, song_title, yt_url) :
     conn.commit()
     cur.close()
     conn.close()
-    
+
 
 def sqlModifyFaceImg(userID, img_fn, img_enc_fn) :
         conn = psycopg2.connect(dbname=sauce.DB_NAME, user= sauce.DB_USER, password=sauce.DB_PASS, host=sauce.DB_HOST)
@@ -66,6 +66,17 @@ def sqlModifyFaceImg(userID, img_fn, img_enc_fn) :
                 last_updated = CURRENT_TIMESTAMP(0) AT TIME ZONE 'America/Chicago'
                 WHERE id = {};
         '''.format(img_fn, img_enc_fn, userID))
+        conn.commit()
+        cur.close()
+        conn.close()
+
+def sqlDeleteRecord(userID) : 
+        conn = psycopg2.connect(dbname=sauce.DB_NAME, user= sauce.DB_USER, password=sauce.DB_PASS, host=sauce.DB_HOST)
+        cur = conn.cursor()
+        cur.execute('''
+                DELETE from reg_users 
+                where id = {}; 
+        '''.format(userID))
         conn.commit()
         cur.close()
         conn.close()

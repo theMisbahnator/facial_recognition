@@ -39,16 +39,25 @@ def modifyUserSong(name, userID, yt_url) :
 
 def modifyUserPhoto(name, userID, new_img_fn) :
     old_img = query.sqlGetImgName(userID)
-    old_img_enc = query.sqlGetImgName(userID)
+    old_img_enc = query.sqlGetImgEncName(userID)
     ThemeSong.deleteFile(old_img)
     ThemeSong.deleteFile(old_img_enc)
     img_fn, img_enc_fn = addFaceInfo(name, userID, new_img_fn)
     query.sqlModifyFaceImg(userID, img_fn, img_enc_fn)
 
 
+def deleteUserData(userID) :
+    old_img = query.sqlGetImgName(userID)
+    old_img_enc = query.sqlGetImgEncName(userID)
+    old_mp3_fn = query.sqlGetMP3Name(userID)
+    ThemeSong.deleteFile(old_img)
+    ThemeSong.deleteFile(old_img_enc)
+    ThemeSong.deleteFile(old_mp3_fn)
+    query.sqlDeleteRecord(userID)
 
 
 
-# addUser("nabil", "https://www.youtube.com/watch?v=--YQePd7jQU&list=RDLH0d7NRoWkU&index=3&ab_channel=MarcxyMane", "nabil.jpg")
-# modifyUserSong("nabil", "8", "https://www.youtube.com/watch?v=9-tfkd9vnnA&ab_channel=ek1")
-# modifyUserPhoto("nabil", 8, "taha.jpg")
+# addUser("misbahnator", "https://www.youtube.com/watch?v=--YQePd7jQU&list=RDLH0d7NRoWkU&index=3&ab_channel=MarcxyMane", "misbah.jpg")
+# modifyUserSong("misbah", "10", "https://www.youtube.com/watch?v=9-tfkd9vnnA&ab_channel=ek1")
+# modifyUserPhoto("misbah", 10, "sarim.jpg")
+# deleteUserData(10)
