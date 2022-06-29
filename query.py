@@ -120,6 +120,18 @@ def sqlGetImgEncName(userID) :
     conn.close()
     return img_enc_fn
 
+def sqlGetImgEncs () :
+    conn = psycopg2.connect(dbname=sauce.DB_NAME, user= sauce.DB_USER, password=sauce.DB_PASS, host=sauce.DB_HOST)
+    cur = conn.cursor()
+    cur.execute('''
+            select img_enc_fn from reg_users
+    ''')
+    list_encs = cur.fetchall()
+    cur.close()
+    conn.close()
+    return list_encs
 
 
     
+hey = sqlGetImgEncs()
+print(hey)

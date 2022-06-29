@@ -119,6 +119,14 @@ def getFile(fileName) :
     return signedUrl
 
 
+def getEncFile(fileName) :
+    session = boto3.Session()
+    s3 = session.client('s3', aws_access_key_id=sauce.AWS_ACCESS_KEY_ID , aws_secret_access_key=sauce.AWS_SECRET_ACCESS_KEY)
+    s3.download_file(sauce.BUCKET_NAME, fileName, fileName)
+
+def removeFile(fileName) :
+    os.remove(fileName)
+
 def deleteFile(filename) : 
     s3 = boto3.resource('s3')
     s3.Object(sauce.BUCKET_NAME, filename).delete()

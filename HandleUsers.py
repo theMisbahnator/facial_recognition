@@ -1,4 +1,4 @@
-from main import encode_image, saveEncoding
+from face_rec_local import encode_image, saveEncoding
 import ThemeSong
 import query
 
@@ -57,7 +57,9 @@ def deleteUserData(userID) :
 
 
 
-# addUser("misbahnator", "https://www.youtube.com/watch?v=--YQePd7jQU&list=RDLH0d7NRoWkU&index=3&ab_channel=MarcxyMane", "misbah.jpg")
+# addUser("nabil", "https://www.youtube.com/watch?v=9-tfkd9vnnA&ab_channel=ek1", "nabil.jpg")
+# addUser("sarim", "https://www.youtube.com/watch?v=V7UgPHjN9qE&ab_channel=DrakeVEVO", "sarim.jpg")
+# addUser("taha", "https://www.youtube.com/watch?v=OrYjTUbyLZ4&ab_channel=ChiefKeef-Topic", "taha.jpg")
 # modifyUserSong("misbah", "10", "https://www.youtube.com/watch?v=9-tfkd9vnnA&ab_channel=ek1")
 # modifyUserPhoto("misbah", 10, "sarim.jpg")
 # deleteUserData(10)
