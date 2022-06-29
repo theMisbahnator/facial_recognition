@@ -8,6 +8,7 @@ import boto3
 import requests
 from botocore.exceptions import NoCredentialsError
 
+
 '''
 File like object that streams the mp3 file found in the 
 presigned url that allows access to mp3 files. 
@@ -31,8 +32,9 @@ Converts an MP4 file into an MP3 file within the current directory.
 Stores the result in the current directory
 '''
 def convertToMP3(fileName) :
-    video = VideoFileClip("./{}.mp4".format(fileName))
-    video.audio.write_audiofile("./{}.mp3".format(fileName))
+    video = VideoFileClip("./{}.mp4".format(fileName[:-4]))
+    video.audio.write_audiofile("./{}".format(fileName))
+
 
 '''
 Used to download new theme songs at the registration of a 
@@ -43,23 +45,31 @@ Param :
 Returns: none
 Effects: placecs an mp4 audio file from youtube url within current directory
 '''
-def downloadVideo(url, userName) :
+def downloadVideo(url, fileName) :
     print("Getting streams...")
     # youtube object contains header info
     yt = YouTube(url)
+    
     # filters for the best audio stream
     print("Filtering streams...")
     someFiltering =  yt.streams.filter(file_extension='mp4')[0]
+
+    # formating title
+    title_name = yt.title.replace("'", "").replace("/", "").replace("\\", "")
+
+    print(title_name)
+
     if someFiltering != None :
         print("Downloading...")
-        someFiltering.download(filename="{}.mp4".format(userName))
+        someFiltering.download(filename="./{}.mp4".format(fileName[:-4]))
         print("Converting to mp3...")
-        convertToMP3(userName)
-        os.remove("{}.mp4".format(userName))
+        convertToMP3(fileName)
+        os.remove("./{}.mp4".format(fileName[:-4]))
         print("Done!")
-        return
+        return title_name
     # failed to download
     print("ERROR: Audio Stream not Found!")
+    return "ERROR"
 
 '''
 Given an mp3 file name within the current directory, the method
@@ -70,10 +80,11 @@ Param:
 Returns: boolean value indicating result of upload
 Effects: uploads mp3 file to AWS
 '''
-def uploadFile(fileName) : 
+def uploadFile(fileName, objectName) : 
     s3 = boto3.client('s3', aws_access_key_id=sauce.AWS_ACCESS_KEY_ID, aws_secret_access_key=sauce.AWS_SECRET_ACCESS_KEY)
     try:
-        s3.upload_file("{}.mp3".format(fileName), sauce.BUCKET_NAME, "{}.mp3".format(fileName))
+        s3.upload_file(fileName, sauce.BUCKET_NAME, objectName)
+        os.remove(fileName)
         print("Upload Successful")
         return True
     except FileNotFoundError:
@@ -102,10 +113,15 @@ def getFile(fileName) :
         HttpMethod='GET',
         Params={
             "Bucket": "{}".format(sauce.BUCKET_NAME),
-            "Key": "{}.mp3".format(fileName),
+            "Key": fileName,
         }
     )
     return signedUrl
+
+
+def deleteFile(filename) : 
+    s3 = boto3.resource('s3')
+    s3.Object(sauce.BUCKET_NAME, filename).delete()
 
 
 '''
@@ -136,7 +152,9 @@ def playMusic(fileName, playTime) :
 
 
 
+
 # downloadVideo("https://www.youtube.com/watch?v=iP6XpLQM2Cs&ab_channel=keshaVEVO", "kesha")
 # playMusic("kesha", 20)
 # playMusic("doYaLike", 10)
-# uploadFile("doYaLike")
+# uploadFile("doYaLike.mp3","doYaLike.mp3" )
+# deleteFile("doYaLike.mp3")
