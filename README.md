@@ -1,58 +1,26 @@
 # facial_recognition
 
-Resources: 
-used to appload mp4 files to the AWS
-https://medium.com/bilesanmiahmad/how-to-upload-a-file-to-amazon-s3-in-python-68757a1867c6
+TODO: 
 
-Notes for later Development
-
-Structure of music system: 
-
-There are two components
-
-AWS S3 
-- stores all the mp3 files of audio registered in the music systen
-- stores all headshot encodings of users in the server
-- stores all encoding of images 
-
-MongoDB
-- stores name
-- stores images url located in aws s3
-- stores the the url/name of mp3 file
-- stores connection to encoding (or could be stored here)
-- stores song title
-- stores youtube url
-- stores date added
-- last modified
+server
+- rename file names
+- comment
+- remove uneccessary files (parts of files)
 
 
-Program starts
-1) get all encodings and corresponding names from mongo/AWS and store them in an array
-2) run the ML script on rasperry pi (the server side should not apply to this)
+ml script
+- encorporate the calling of endpoints to access data
+- process numpy arrays in json format, this might help: 
+https://stackoverflow.com/questions/26646362/numpy-array-is-not-json-serializable
+- when getting the music, make a get request
+- move the relevant part of files from server directory with this script
+- after thats done, dockerize the script and make sure it runs
 
 
-During modification
+Front end
+- create a front end folder
+- import react boiler plate
+- have fun, ur almost at the finish line
 
-Adding New User
-- newUser(name, attachAPhoto, urlToDesiredSong)
-- add to mongo
-- add to AWS S3  (DONE)
 
-Delete User
-- deleteUser(name)
-- delete entry in mongo
-- delete entry data in aws s3
 
-Change Song
-- changeSong(name, urlToNewSong)
-- modify url/name of mp3, song title, youtube url, last modified in mongo
-- add new song to aws s3
-- delete current song attached to user in aws s3
-
-Change Photo
-- changePhoto(name, newAttachedPhoto)
-- modify image url and last modified in mongo
-- add new image to aws s3
-- delete current image attached to user in aws s3
-
-Commands are accessable through Django and React interface

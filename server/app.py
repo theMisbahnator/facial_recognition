@@ -80,32 +80,6 @@ api.add_resource(ImgHandler, '/imgs/<int:userID>')
 api.add_resource(SongModifier, '/modify-song')
 api.add_resource(ImgEncHandler, '/encodings')
 api.add_resource(ImgModifier, '/modify-img')
-# https://stackoverflow.com/questions/26646362/numpy-array-is-not-json-serializable
-
-# endpoints left
-'''
-finished
-- get all users
-- get the data for a single user
-- delete a user
-- modify a song of an existing user
-- get the signed url to the mp3 of an existing user
-- get all enc files for all the users 
-- put, modify user photo
-- post, create a new user
-- get, get img for a given user
-
-We can send a base64 encoding of a jpeg image
-as an arguement in the body of a put request
-
-client -> takes image and encodes it and put it in the body
-
-server -> takes arguement and decodes it from its base64 encoding 
-and rebuilds it into a jpeg file, which is then marked and uploaded
-to wherever it needs to go
-
-
-'''
 
 if __name__ == '__main__':
     app.run(debug=True)
