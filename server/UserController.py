@@ -1,6 +1,9 @@
 from face_rec_local import encode_image, saveEncoding
-import ThemeSong
-import query
+import ThemeSong as ThemeSong
+import query as query
+import numpy as np
+import base64
+import json
 
 
 def addSongInfo(name, userID, yt_url) :
@@ -27,7 +30,7 @@ def addUser(name, yt_url, cur_img_fn) :
     # face stuff
     img_fn, img_enc_fn = addFaceInfo(name, userID, cur_img_fn)
     # add users to db 
-    query.sqlAddUser(userID, name, yt_url, mp3_fn, song_title, img_fn, img_enc_fn)
+    return query.sqlAddUser(userID, name, yt_url, mp3_fn, song_title, img_fn, img_enc_fn)
 
 
 def modifyUserSong(name, userID, yt_url) :
@@ -53,13 +56,52 @@ def deleteUserData(userID) :
     ThemeSong.deleteFile(old_img)
     ThemeSong.deleteFile(old_img_enc)
     ThemeSong.deleteFile(old_mp3_fn)
-    query.sqlDeleteRecord(userID)
+    return query.sqlDeleteRecord(userID)
 
+def getAllImgEncs() :
+    list_of_encs = query.sqlGetImgEncs()
+    keys = ["name", "file_name"]
+    dict_of_users = []
+    for enc in list_of_encs :
+        dict_of_users.append(query.convertToDict(enc, keys))
+    
+    for user in dict_of_users :
+        fileName = user["file_name"]
+        ThemeSong.getFileDownload(fileName)
+        encoding = np.load(fileName)
+        ThemeSong.removeFile(fileName)
+        user["content"] = encoding.tolist()
+
+    return json.dumps(dict_of_users)
+    
+
+def createImg(b64_string) :
+    b64_string = b64_string.encode('ascii')
+    with open('encode.bin', "wb") as file:
+        file.write(b64_string)
+    file = open('encode.bin', 'rb')
+    byte = file.read()
+    file.close()
+    decodeit = open('img.jpg', 'wb')
+    decodeit.write(base64.b64decode((byte)))
+    decodeit.close()
+    ThemeSong.removeFile('encode.bin')
+    return 'img.jpg'
+
+def loadImg(userID) :
+    fileName = query.sqlGetImgName(userID)
+    ThemeSong.getFileDownload(fileName)
+    with open('./{}'.format(fileName), "rb") as img_file:
+        b64_encoding = base64.b64encode(img_file.read())
+    b64_string = b64_encoding.decode('utf-8')
+    ThemeSong.removeFile(fileName)
+    return b64_string
+    
 
 
 # addUser("nabil", "https://www.youtube.com/watch?v=9-tfkd9vnnA&ab_channel=ek1", "nabil.jpg")
 # addUser("sarim", "https://www.youtube.com/watch?v=V7UgPHjN9qE&ab_channel=DrakeVEVO", "sarim.jpg")
 # addUser("taha", "https://www.youtube.com/watch?v=OrYjTUbyLZ4&ab_channel=ChiefKeef-Topic", "taha.jpg")
-# modifyUserSong("misbah", "10", "https://www.youtube.com/watch?v=9-tfkd9vnnA&ab_channel=ek1")
+# modifyUserSong("misbah", "11", "https://www.youtube.com/watch?v=9-tfkd9vnnA&list=RD9-tfkd9vnnA&start_radio=1&ab_channel=ek1")
 # modifyUserPhoto("misbah", 10, "sarim.jpg")
 # deleteUserData(10)

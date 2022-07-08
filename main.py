@@ -1,12 +1,12 @@
 
 import cv2
 import face_recognition as face_rec
-import face_rec_local as frl
+import server.face_rec_local as frl
 import numpy as np
-import query
+import server.query as query
 
 import time
-import ThemeSong
+import server.ThemeSong as ThemeSong
 
 def encode_face_from_frames(face_locations, face_encodings, this_frame):
     found_names = []

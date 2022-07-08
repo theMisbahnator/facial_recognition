@@ -3,7 +3,7 @@ from moviepy.editor import *
 import os
 import pygame
 import time
-import sauce
+import sauce as sauce
 import boto3
 import requests
 from botocore.exceptions import NoCredentialsError
@@ -119,7 +119,7 @@ def getFile(fileName) :
     return signedUrl
 
 
-def getEncFile(fileName) :
+def getFileDownload(fileName) :
     session = boto3.Session()
     s3 = session.client('s3', aws_access_key_id=sauce.AWS_ACCESS_KEY_ID , aws_secret_access_key=sauce.AWS_SECRET_ACCESS_KEY)
     s3.download_file(sauce.BUCKET_NAME, fileName, fileName)

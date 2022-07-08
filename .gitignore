@@ -9,3 +9,6 @@ facial_env
 
 # secret stuff
 sauce.py
+
+# more secret stuff
+*.env

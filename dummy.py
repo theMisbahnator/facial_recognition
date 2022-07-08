@@ -1,9 +1,8 @@
 import re
-stri = "babycakes.mp4"
+import os
+from dotenv import load_dotenv
 
-print("./{}.mp3".format(stri[:-4]))
+load_dotenv()
 
-title_name = "The Weeknd - You Know I Love It But You're Angry (unreleased)"
-print(title_name)
-title_name = title_name.replace("'", "")
-print(title_name)
+l = os.environ.get('AWS_ACCESS_KEY_ID')
+print(l)
