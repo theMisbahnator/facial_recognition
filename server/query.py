@@ -151,7 +151,7 @@ def sqlGetImgEncs () :
     conn = psycopg2.connect(dbname=DB_NAME, user= DB_USER, password=DB_PASS, host=DB_HOST)
     cur = conn.cursor()
     cur.execute('''
-            select name, img_enc_fn from reg_users
+            select name, img_enc_fn, id from reg_users
     ''')
     list_encs = cur.fetchall()
     cur.close()
@@ -201,6 +201,3 @@ def sqlGetUser(userID) :
     dict_of_users.append(convertToDict(user, keys))
 
     return json.dumps(dict_of_users) 
-  
-
-

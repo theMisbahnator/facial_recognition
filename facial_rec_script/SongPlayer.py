@@ -31,8 +31,8 @@ Effects: plays audio on device speakers
 '''
 pygame.init()
 pygame.mixer.init()
-def playMusic(fileName, playTime) :
-    mp3Stream = Stream(getFile(fileName))
+def playMusic(fileNameUrl, playTime) :
+    mp3Stream = Stream(fileNameUrl)
     pygame.mixer.music.load(mp3Stream)
     pygame.mixer.music.play()
     startTime = time.time()

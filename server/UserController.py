@@ -60,7 +60,7 @@ def deleteUserData(userID) :
 
 def getAllImgEncs() :
     list_of_encs = query.sqlGetImgEncs()
-    keys = ["name", "file_name"]
+    keys = ["name", "file_name", "userID"]
     dict_of_users = []
     for enc in list_of_encs :
         dict_of_users.append(query.convertToDict(enc, keys))
