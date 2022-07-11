@@ -3,7 +3,7 @@ from flask import Flask, request
 from flask_restful import Api, Resource
 import query 
 from UserController import deleteUserData, addUser, modifyUserSong, modifyUserPhoto, getAllImgEncs, createImg, loadImg
-from ThemeSong import getFile
+from AwsHandler import getFile
 
 app = Flask(__name__)
 api = Api(app)

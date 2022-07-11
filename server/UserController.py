@@ -1,5 +1,5 @@
 from face_rec_local import encode_image, saveEncoding
-import ThemeSong as ThemeSong
+import AwsHandler as aws
 import query as query
 import numpy as np
 import base64
@@ -8,8 +8,8 @@ import json
 
 def addSongInfo(name, userID, yt_url) :
     mp3_fn = "{}_{}_song.mp3".format(name, userID)
-    song_title = ThemeSong.downloadVideo(yt_url, mp3_fn)
-    ThemeSong.uploadFile(mp3_fn, mp3_fn)
+    song_title = aws.downloadVideo(yt_url, mp3_fn)
+    aws.uploadFile(mp3_fn, mp3_fn)
     return mp3_fn, song_title
 
 
@@ -17,8 +17,8 @@ def addFaceInfo(name, userID, cur_img_fn) :
     img_fn = "{}_{}_face.jpg".format(name, userID)
     img_enc_fn = "{}_{}_face_enc.npy".format(name, userID)
     saveEncoding(encode_image(cur_img_fn), img_enc_fn)
-    ThemeSong.uploadFile(img_enc_fn, img_enc_fn)
-    ThemeSong.uploadFile(cur_img_fn, img_fn)
+    aws.uploadFile(img_enc_fn, img_enc_fn)
+    aws.uploadFile(cur_img_fn, img_fn)
     return img_fn, img_enc_fn
 
 
@@ -35,7 +35,7 @@ def addUser(name, yt_url, cur_img_fn) :
 
 def modifyUserSong(name, userID, yt_url) :
     old_mp3_fn = query.sqlGetMP3Name(userID)
-    ThemeSong.deleteFile(old_mp3_fn)
+    aws.deleteFile(old_mp3_fn)
     mp3_fn, song_title = addSongInfo(name, userID, yt_url)
     query.sqlModifySong(userID, mp3_fn, song_title, yt_url)
 
@@ -43,8 +43,8 @@ def modifyUserSong(name, userID, yt_url) :
 def modifyUserPhoto(name, userID, new_img_fn) :
     old_img = query.sqlGetImgName(userID)
     old_img_enc = query.sqlGetImgEncName(userID)
-    ThemeSong.deleteFile(old_img)
-    ThemeSong.deleteFile(old_img_enc)
+    aws.deleteFile(old_img)
+    aws.deleteFile(old_img_enc)
     img_fn, img_enc_fn = addFaceInfo(name, userID, new_img_fn)
     query.sqlModifyFaceImg(userID, img_fn, img_enc_fn)
 
@@ -53,9 +53,9 @@ def deleteUserData(userID) :
     old_img = query.sqlGetImgName(userID)
     old_img_enc = query.sqlGetImgEncName(userID)
     old_mp3_fn = query.sqlGetMP3Name(userID)
-    ThemeSong.deleteFile(old_img)
-    ThemeSong.deleteFile(old_img_enc)
-    ThemeSong.deleteFile(old_mp3_fn)
+    aws.deleteFile(old_img)
+    aws.deleteFile(old_img_enc)
+    aws.deleteFile(old_mp3_fn)
     return query.sqlDeleteRecord(userID)
 
 def getAllImgEncs() :
@@ -67,9 +67,9 @@ def getAllImgEncs() :
     
     for user in dict_of_users :
         fileName = user["file_name"]
-        ThemeSong.getFileDownload(fileName)
+        aws.getFileDownload(fileName)
         encoding = np.load(fileName)
-        ThemeSong.removeFile(fileName)
+        aws.removeFile(fileName)
         user["content"] = encoding.tolist()
 
     return json.dumps(dict_of_users)
@@ -85,16 +85,16 @@ def createImg(b64_string) :
     decodeit = open('img.jpg', 'wb')
     decodeit.write(base64.b64decode((byte)))
     decodeit.close()
-    ThemeSong.removeFile('encode.bin')
+    aws.removeFile('encode.bin')
     return 'img.jpg'
 
 def loadImg(userID) :
     fileName = query.sqlGetImgName(userID)
-    ThemeSong.getFileDownload(fileName)
+    aws.getFileDownload(fileName)
     with open('./{}'.format(fileName), "rb") as img_file:
         b64_encoding = base64.b64encode(img_file.read())
     b64_string = b64_encoding.decode('utf-8')
-    ThemeSong.removeFile(fileName)
+    aws.removeFile(fileName)
     return b64_string
     
 
