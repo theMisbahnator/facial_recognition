@@ -6,6 +6,9 @@ import time
 import requests
 import json
 
+# pip install requests pygame face-recognition opencv-python
+
+
 BASE = "http://127.0.0.1:5000/"
 
 def encode_face_from_frames(face_locations, face_encodings, this_frame):
