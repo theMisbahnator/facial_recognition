@@ -11,3 +11,42 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.navbar-johncena {
+  margin-left: 20px;
+}
+
+.form-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reg-users-title {
+  margin-top: 2.5%;
+  width: 50%;
+  text-align: center;
+}
+
+.search-quote {
+  margin-bottom: 1.5%;
+}
+
+
+.johncena {
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+}
+
+.adduser {
+  margin-left: 2%;
+  cursor: pointer;
+}

@@ -4,9 +4,11 @@ from flask_restful import Api, Resource
 import query 
 from UserController import deleteUserData, addUser, modifyUserSong, modifyUserPhoto, getAllImgEncs, createImg, loadImg
 from AwsHandler import getFile
+from flask_cors import CORS
 
 app = Flask(__name__)
 api = Api(app)
+CORS(app)
 
 
 class UserCreator(Resource) :
