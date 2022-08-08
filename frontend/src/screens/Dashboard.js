@@ -15,7 +15,7 @@ const Dashboard = () => {
         .get('http://127.0.0.1:5000/users')
         .then((response) => {
             console.log(response.data);
-            setUsers(JSON.parse(response.data).reverse()); 
+            setUsers(JSON.parse(response.data)); 
         })
         .catch((err) => {
             console.log(err); 
