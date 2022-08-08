@@ -44,9 +44,63 @@ code {
 .flex {
   display: flex;
   flex-direction: row;
+  margin-bottom: 2.5%;
 }
 
 .adduser {
   margin-left: 2%;
   cursor: pointer;
+  
+}
+
+.userImg {
+  max-width: 90%;
+  max-height: 90%;
+  display: inline;
+  margin-top: 3%;
+  border-radius: 5%;
+}
+
+.cardSize {
+  max-width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.top-level-info {
+  /* text-align: center; */
+}
+
+.name-container {
+  display: inline-flex;
+  text-align: center;
+}
+
+.name {
+  margin-top: 5%;
+}
+
+.song-title {
+  display: inline;
+  position: absolute;
+  left: 60%;
+  top: 30%; 
+}
+
+.users {
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+}
+
+.test {
+  text-align: center;
+}
+
+.creation-details {
+  margin-top: 4%;
+}
+
+.button {
+  width: 30%;
 }
