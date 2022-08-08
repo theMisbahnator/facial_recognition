@@ -58,6 +58,10 @@ class ImgHandler(Resource) :
     def get(self, userID) :
         return {"imgFile" : loadImg(userID)}
 
+class ImgHandlerUrl(Resource) :
+    def get(self, fileName) :
+        return {"imgFileUrl" : getFile(fileName)}
+
 
 class ImgEncHandler(Resource) :
     # works!
@@ -80,6 +84,7 @@ api.add_resource(UserCreator, '/create-user')
 api.add_resource(UserInstanceHandler, '/user/<int:userID>')
 api.add_resource(SongHandler, '/songs/<int:userID>')
 api.add_resource(ImgHandler, '/imgs/<int:userID>')
+api.add_resource(ImgHandlerUrl, '/img/<string:fileName>')
 api.add_resource(SongModifier, '/modify-song')
 api.add_resource(ImgEncHandler, '/encodings')
 api.add_resource(ImgModifier, '/modify-img')

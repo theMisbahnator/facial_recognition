@@ -12,6 +12,7 @@ const UserList = ({users, setUsers}) => {
                     name = {userDetails["name"]}
                     song_title = {userDetails["song_title"]}
                     yt_url = {userDetails["youtube_url"]}
+                    file_name = {userDetails["img_fn"]}
                     last_updated = {userDetails["last_updated"]}
                     date_created = {userDetails["date_created"]}
                 />

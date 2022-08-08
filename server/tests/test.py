@@ -78,6 +78,11 @@ def testImgHandler(userID) :
     decodeit = open('hello_level.jpg', 'wb')
     decodeit.write(base64.b64decode((byte)))
     decodeit.close()
+
+def testImgHandlerUrl(fileName) :
+    endpoint = BASE + 'img/{}'.format(fileName)
+    response = requests.get(endpoint)
+    print(response.json())
     
 
 def testImgEncHandler() : 
@@ -101,7 +106,8 @@ def testImgModifier(userID, name) :
 
 
 # testUserCreation('jake', url3)
-testUserHandler()
+testImgHandlerUrl("misbah_11_face.jpg")
+# testUserHandler()
 # testGetSingleUser(14)
 # testDeleteSingleUser(16)
 # testSongModifier(11, 'misbah', url2)
