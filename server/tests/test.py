@@ -101,11 +101,11 @@ def testImgModifier(userID, name) :
 
 
 # testUserCreation('jake', url3)
-# testUserHandler()
+testUserHandler()
 # testGetSingleUser(14)
 # testDeleteSingleUser(16)
 # testSongModifier(11, 'misbah', url2)
-testSongHandler(11)
+# testSongHandler(11)
 # testImgHandler(11)
 # testImgEncHandler() # i think this works, havent tried extracting the numpy data yet
 # testImgModifier(11, 'misbah')
