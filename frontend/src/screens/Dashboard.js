@@ -9,6 +9,11 @@ import NavBar from '../components/NavBar';
 
 const Dashboard = () => {
     const [users, setUsers] = useState([]); 
+    const [message, setMessage] = useState('');
+
+    const handleMessageChange = event => {
+        setMessage(event.target.value);
+    };
 
     useEffect(() => {
         axios
@@ -22,6 +27,7 @@ const Dashboard = () => {
         });
     }, []); 
 
+
   return (
     <div>
         <NavBar/>
@@ -30,12 +36,12 @@ const Dashboard = () => {
                 <h2 className="display-5">Registered Users</h2>
                 <div className="search-quote">Wanna enter a Room in Style?</div>
                 <div className ="flex">
-                    <input className="form-control mr-sm-2" type="text" placeholder="Enter a name..." aria-label="Search"></input>
+                    <input className="form-control mr-sm-2" type="text" placeholder="Enter a name..." aria-label="Search" onChange={handleMessageChange}></input>
                     <AddUser/>
                 </div>
             </div>
         </div>
-        <UserList users={users} setUsers = {setUsers}/>
+        <UserList users={users} setUsers = {setUsers} message = {message}/>
     </div>
   )
 }

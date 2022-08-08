@@ -24,7 +24,6 @@ class UserCreator(Resource) :
 class UsersHandler(Resource) :
     # works!
     def get(self) :
-        print("i am here")
         return query.sqlGetAllUsers()
 
 
