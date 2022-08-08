@@ -168,6 +168,7 @@ def sqlGetAllUsers() :
             youtube_url, img_fn, 
             last_updated, date_created 
             from reg_users
+            order by last_updated desc
     ''')
     list_users = cur.fetchall()
     cur.close()

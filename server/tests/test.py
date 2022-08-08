@@ -106,8 +106,8 @@ def testImgModifier(userID, name) :
 
 
 # testUserCreation('jake', url3)
-testImgHandlerUrl("misbah_11_face.jpg")
-# testUserHandler()
+# testImgHandlerUrl("misbah_11_face.jpg")
+testUserHandler()
 # testGetSingleUser(14)
 # testDeleteSingleUser(16)
 # testSongModifier(11, 'misbah', url2)
