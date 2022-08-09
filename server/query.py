@@ -1,6 +1,7 @@
 import psycopg2
 import json
 import sauce
+import AwsHandler as aws
 
 DB_HOST = sauce.DB_HOST
 DB_NAME = sauce.DB_NAME
@@ -178,6 +179,11 @@ def sqlGetAllUsers() :
     dict_of_users = []
     for user in list_users :
         dict_of_users.append(convertToDict(user, keys))
+
+    # add url for accessing images
+    for user in dict_of_users : 
+        user["img_url"] = aws.getFile(user['img_fn'])
+
 
     return json.dumps(dict_of_users) 
     
