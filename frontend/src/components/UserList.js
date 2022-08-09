@@ -24,7 +24,7 @@ const UserList = ({users, setUsers, message}) => {
                     name = {userDetails["name"]}
                     song_title = {userDetails["song_title"]}
                     yt_url = {userDetails["youtube_url"]}
-                    file_name = {userDetails["img_fn"]}
+                    img_url= {userDetails["img_url"]}
                     last_updated = {userDetails["last_updated"]}
                     date_created = {userDetails["date_created"]}
                 />

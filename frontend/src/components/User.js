@@ -3,25 +3,8 @@ import React, { useState } from 'react'
 import "../index"
 import { MdDelete } from "react-icons/md";
 
-const User = ({id, name, song_title, yt_url, file_name, last_updated, date_created}) => {
+const User = ({id, name, song_title, yt_url, img_url, last_updated, date_created}) => {
     const [url, setUrl] = useState("");
-    
-    const getImgSrc = file_name => {
-        axios
-        .get(`http://127.0.0.1:5000/img/${file_name}`)
-        .then((response) => {
-            let url = response.data["imgFileUrl"]; 
-            setUrl(url); 
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-    }
-
-    const getUrl = (file_name) => {
-        getImgSrc(file_name); 
-        return url; 
-    }
 
   return (
     <span>
@@ -29,7 +12,7 @@ const User = ({id, name, song_title, yt_url, file_name, last_updated, date_creat
             <div className="container">
                 <div class="row">
                     <div class="col-5">
-                        <img class=" userImg" src={getUrl(file_name)} alt="user headshot"></img> 
+                        <img class=" userImg" src={img_url} alt="user headshot"></img> 
                     </div>
                     <div class="col-7 test">
                         <p class="display-6 name">{name}</p>
