@@ -67,9 +67,6 @@ code {
   margin-right: auto;
 }
 
-.top-level-info {
-  /* text-align: center; */
-}
 
 .name-container {
   display: inline-flex;
@@ -103,4 +100,68 @@ code {
 
 .button {
   width: 30%;
+}
+
+.dates {
+  margin-top: 20px;
+}
+
+
+.add-button {
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.date-holder {
+  height: 20px;
+  line-height: 35px;
+  text-align: center;
+}
+
+.add-modal {
+  background-color: white;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 6%;
+  /* box-shadow: 1.6px 3.2px 3.2px hsl(0deg 0% 0% / 0.45); */
+  box-shadow: 4.7px 9.4px 9.4px hsl(0deg 0% 0% / 0.35);
+  outline: none;
+  
+  width: 650px;
+  height: 550px;
+}
+
+.content-form {
+  text-align: center;
+}
+
+.title-form {
+  background: linear-gradient(to left, #f69ec4, #f9dd94 100%);
+  background-position: 0 100%;
+  background-size: 100% 2px;
+  background-repeat: repeat-x;
+}
+
+.close-form {
+  text-align: right;
+}
+
+.close-button {
+  padding: 0;
+  margin-right: 5px;
+  border: none;
+  background: none;
+}
+
+.form-elem {
+  margin-top: 50px;
+  max-width: 300px;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.submit-form {
+  margin-top: 70px;
 }
