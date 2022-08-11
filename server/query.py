@@ -206,5 +206,8 @@ def sqlGetUser(userID) :
            'img_fn', 'last_updated', 'date_created']
     dict_of_users = []
     dict_of_users.append(convertToDict(user, keys))
+    
+    for user in dict_of_users : 
+        user["img_url"] = aws.getFile(user['img_fn'])
 
     return json.dumps(dict_of_users) 

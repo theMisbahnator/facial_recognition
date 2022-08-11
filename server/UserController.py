@@ -30,7 +30,8 @@ def addUser(name, yt_url, cur_img_fn) :
     # face stuff
     img_fn, img_enc_fn = addFaceInfo(name, userID, cur_img_fn)
     # add users to db 
-    return query.sqlAddUser(userID, name, yt_url, mp3_fn, song_title, img_fn, img_enc_fn)
+    query.sqlAddUser(userID, name, yt_url, mp3_fn, song_title, img_fn, img_enc_fn)
+    return userID
 
 
 def modifyUserSong(name, userID, yt_url) :

@@ -191,3 +191,17 @@ code {
 .button-space {
   margin-left: 20px;
 }
+
+.load-modal {
+  background-color: white;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 17%;
+  box-shadow: 1.6px 3.2px 3.2px hsl(0deg 0% 0% / 0.45);
+  /* box-shadow: 4.7px 9.4px 9.4px hsl(0deg 0% 0% / 0.35); */
+  outline: none;
+  
+  width: 500px;
+  height: 230px;
+}
+

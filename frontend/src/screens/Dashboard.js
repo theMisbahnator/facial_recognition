@@ -37,7 +37,7 @@ const Dashboard = () => {
                 <div className="search-quote">Wanna enter a Room in Style?</div>
                 <div className ="flex">
                     <input className="form-control mr-sm-2" type="text" placeholder="Enter a name..." aria-label="Search" onChange={handleMessageChange}></input>
-                    <AddUser/>
+                    <AddUser users = {users} setUsers = {setUsers}/>
                 </div>
             </div>
         </div>

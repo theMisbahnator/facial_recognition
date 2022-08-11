@@ -7,8 +7,9 @@ import '../index'
 import Modal from 'react-modal';
 
 Modal.setAppElement("#root"); 
-const AddUser = () => {
+const AddUser = ({users, setUsers}) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [loading, setLoading] = useState(false); 
     const [nameErr, setNameErr] = useState("");
     const [linkErr, setLinkErr] = useState("");
     const [fileErr, setFileErr] = useState("");
@@ -49,8 +50,6 @@ const AddUser = () => {
             return; 
         }
 
-
-        
         let reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = (e) => {
@@ -63,9 +62,8 @@ const AddUser = () => {
                 url : ytLink
               })
               .then(function (response) {
-                console.log(response);
-                console.log("hi i am done making");
-                window.location.reload(false);
+                handleNewUser(response.data["userID"]); 
+                setLoading(false); 
               })
               .catch(function (error) {
                 console.log(error);
@@ -74,6 +72,22 @@ const AddUser = () => {
         };
 
         handleClose(); 
+        setLoading(true); 
+    }
+
+    const handleNewUser = userID => {
+        // make a get request to get this users data
+        axios
+        .get(`http://127.0.0.1:5000/user/${userID}`)
+        .then((response) => {
+            let userData = JSON.parse(response.data)[0]; 
+            let newUsers = [...users];
+            newUsers.unshift(userData); 
+            setUsers(newUsers); 
+        })
+        .catch((err) => {
+            console.log(err); 
+        });
     }
 
     const linkIsValid = (url) => {
@@ -135,9 +149,18 @@ const AddUser = () => {
                 <div className='submit-form'>
                     <button type="button" class="btn btn-success" onClick={()=> {handleSumbit()}}>Create!</button>
                 </div>
-                
-
             </div>
+        </Modal>
+
+
+        <Modal className = "load-modal border border-success" isOpen={loading}>
+            <div className='content-form'>
+                <div class="spinner-border spinner-border-lg text-success dates" role="status" aria-hidden="true"></div>
+                <div className='display-6'>Creating User...</div>
+                <p className='text-muted'>Currently adding meta data, images, and mp3 files to AWS and PostgreSQL servers.</p>
+                <b>Please do not refresh!</b>
+            </div>
+            
         </Modal>
         
         

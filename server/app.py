@@ -18,7 +18,7 @@ class UserCreator(Resource) :
         fileName = createImg(data['imgData'])
         name = data['userName']
         yt_url = data['url']
-        return addUser(name, yt_url, fileName)
+        return {"userID" : addUser(name, yt_url, fileName)}
 
 
 class UsersHandler(Resource) :
