@@ -132,6 +132,19 @@ code {
   height: 550px;
 }
 
+.delete-modal {
+  background-color: white;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10%;
+  box-shadow: 1.6px 3.2px 3.2px hsl(0deg 0% 0% / 0.45);
+  /* box-shadow: 4.7px 9.4px 9.4px hsl(0deg 0% 0% / 0.35); */
+  outline: none;
+  
+  width: 500px;
+  height: 400px;
+}
+
 .content-form {
   text-align: center;
 }
@@ -164,4 +177,17 @@ code {
 
 .submit-form {
   margin-top: 70px;
+}
+
+.remove-icon {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.delete-buttons {
+  margin-top: 40px;
+} 
+
+.button-space {
+  margin-left: 20px;
 }

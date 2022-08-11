@@ -27,6 +27,8 @@ const UserList = ({users, setUsers, message}) => {
                     img_url= {userDetails["img_url"]}
                     last_updated = {userDetails["last_updated"]}
                     date_created = {userDetails["date_created"]}
+                    users = {users}
+                    setUsers = {setUsers}
                 />
                 ) : null
             ))

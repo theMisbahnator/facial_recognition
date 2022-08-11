@@ -64,7 +64,8 @@ const AddUser = () => {
               })
               .then(function (response) {
                 console.log(response);
-                //window.location.reload(false);
+                console.log("hi i am done making");
+                window.location.reload(false);
               })
               .catch(function (error) {
                 console.log(error);
@@ -109,7 +110,7 @@ const AddUser = () => {
                 <div className='close-form'>
                     <button className="close-button" onClick={() => {handleClose()}}><GrClose/></button>
                 </div>
-                <div className='display-4 title-form'>
+                <div className='display-4 title-form text-muted'>
                     Add User
                 </div>
 
