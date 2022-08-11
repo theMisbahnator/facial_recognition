@@ -14,7 +14,7 @@ CORS(app)
 class UserCreator(Resource) :
     # works
     def post(self) :
-        data = json.loads(request.json)
+        data = request.json
         fileName = createImg(data['imgData'])
         name = data['userName']
         yt_url = data['url']
