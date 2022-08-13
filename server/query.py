@@ -34,7 +34,7 @@ def sqlAddName(name) :
     cur = conn.cursor()
     cur.execute('''
             INSERT INTO reg_users (name, last_updated, date_created)
-            VALUES ('{}', CURRENT_TIMESTAMP(0) AT TIME ZONE 'America/Chicago', current_date AT TIME ZONE 'America/Chicago');
+            VALUES ('{}', CURRENT_TIMESTAMP(0) AT TIME ZONE 'America/Chicago', current_date);
     '''.format(name))
     conn.commit()
     cur.execute('''
@@ -228,3 +228,6 @@ def sqlGetUser(userID) :
         user["img_url"] = aws.getFile(user['img_fn'])
 
     return json.dumps(dict_of_users) 
+
+
+
