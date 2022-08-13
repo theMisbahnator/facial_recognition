@@ -2,7 +2,7 @@ import json
 from flask import Flask, request
 from flask_restful import Api, Resource
 import query 
-from UserController import deleteUserData, addUser, modifyUserSong, modifyUserPhoto, getAllImgEncs, createImg, loadImg
+from UserController import deleteUserData, addUser, modifyUserSong, modifyUserPhoto, getAllImgEncs, createImg, loadImg, modifyUserName
 from AwsHandler import getFile
 from flask_cors import CORS
 
@@ -57,6 +57,7 @@ class ImgHandler(Resource) :
     def get(self, userID) :
         return {"imgFile" : loadImg(userID)}
 
+
 class ImgHandlerUrl(Resource) :
     def get(self, fileName) :
         return {"imgFileUrl" : getFile(fileName)}
@@ -77,6 +78,14 @@ class ImgModifier(Resource) :
         name = data['userName']
         modifyUserPhoto(name, userID, fileName)
 
+class NameModifier(Resource) : 
+    def put (self) :
+        data = json.loads(request.json)
+        name = data['newName']
+        oldName = data['oldName']
+        userID = data['userID']
+        modifyUserName(name, oldName, userID)
+
 
 api.add_resource(UsersHandler, '/users')
 api.add_resource(UserCreator, '/create-user')
@@ -87,6 +96,7 @@ api.add_resource(ImgHandlerUrl, '/img/<string:fileName>')
 api.add_resource(SongModifier, '/modify-song')
 api.add_resource(ImgEncHandler, '/encodings')
 api.add_resource(ImgModifier, '/modify-img')
+api.add_resource(NameModifier, '/modify-name')
 
 if __name__ == '__main__':
     app.run(debug=True)

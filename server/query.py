@@ -97,6 +97,23 @@ def sqlModifyFaceImg(userID, img_fn, img_enc_fn) :
         conn.close()
 
 
+def sqlModifyName(userID, name, img_fn, img_enc_fn, mp3_fn) :
+    conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
+    cur = conn.cursor()
+    cur.execute('''
+            UPDATE reg_users
+            SET img_fn = '{}', 
+            img_enc_fn = '{}',
+            mp3_fn = '{}', 
+            name = '{}',
+            last_updated = CURRENT_TIMESTAMP(0) AT TIME ZONE 'America/Chicago'
+            WHERE id = {};
+    '''.format(img_fn, img_enc_fn, mp3_fn, name, userID))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
 def sqlDeleteRecord(userID) : 
         conn = psycopg2.connect(dbname=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST)
         cur = conn.cursor()

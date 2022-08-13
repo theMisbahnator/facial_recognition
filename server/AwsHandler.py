@@ -111,6 +111,10 @@ def deleteFile(filename) :
     s3.Object(sauce.BUCKET_NAME, filename).delete()
 
 
+def renameFile(oldFile, newFile) :
+    s3 = boto3.resource('s3')
+    s3.Object(sauce.BUCKET_NAME, newFile).copy_from(CopySource='{}/{}'.format(sauce.BUCKET_NAME, oldFile))
+    s3.Object(sauce.BUCKET_NAME, oldFile).delete()
 
 
 
@@ -119,3 +123,10 @@ def deleteFile(filename) :
 # playMusic("doYaLike", 10)
 # uploadFile("doYaLike.mp3","doYaLike.mp3" )
 # deleteFile("doYaLike.mp3")
+# oldName = "misbahaving"
+# name = "misbah"
+# userID = 11
+
+# old_img_fn = "{}_{}_face.jpg".format(oldName, userID)
+# new_img_fn = "{}_{}_face.jpg".format(name, userID)
+# renameFile(old_img_fn, new_img_fn)

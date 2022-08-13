@@ -89,6 +89,7 @@ def createImg(b64_string) :
     aws.removeFile('encode.bin')
     return 'img.jpg'
 
+
 def loadImg(userID) :
     fileName = query.sqlGetImgName(userID)
     aws.getFileDownload(fileName)
@@ -97,6 +98,29 @@ def loadImg(userID) :
     b64_string = b64_encoding.decode('utf-8')
     aws.removeFile(fileName)
     return b64_string
+
+
+def modifyUserName(name, oldName, userID) :
+    # aws 
+    # rename face img 
+    old_img_fn = "{}_{}_face.jpg".format(oldName, userID)
+    new_img_fn = "{}_{}_face.jpg".format(name, userID)
+    aws.renameFile(old_img_fn, new_img_fn)
+
+    # rename enc
+    old_img_enc_fn = "{}_{}_face_enc.npy".format(oldName, userID)
+    new_img_enc_fn = "{}_{}_face_enc.npy".format(name, userID)
+    aws.renameFile(old_img_enc_fn, new_img_enc_fn)
+
+    # rename mp3
+    old_mp3_fn = "{}_{}_song.mp3".format(oldName, userID)
+    new_mp3_fn = "{}_{}_song.mp3".format(name, userID)
+    aws.renameFile(old_mp3_fn, new_mp3_fn)
+
+    # postgres 
+    query.sqlModifyName(userID, name, new_img_fn, new_img_enc_fn, new_mp3_fn)
+
+
     
 
 
@@ -106,3 +130,4 @@ def loadImg(userID) :
 # modifyUserSong("misbah", "11", "https://www.youtube.com/watch?v=9-tfkd9vnnA&list=RD9-tfkd9vnnA&start_radio=1&ab_channel=ek1")
 # modifyUserPhoto("misbah", 10, "sarim.jpg")
 # deleteUserData(10)
+# modifyUserName("misbah", "misbahaving", 11)

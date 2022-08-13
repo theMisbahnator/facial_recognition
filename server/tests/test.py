@@ -104,14 +104,25 @@ def testImgModifier(userID, name) :
     req_body["imgData"] = b64_encoding.decode('utf-8')
     response = requests.put(endpoint, json = json.dumps(req_body))
 
+def testNameModifier(userID, oldName, newName) :
+    endpoint = BASE + 'modify-name'
+    rb = {}
+    rb['userID'] = userID
+    rb['oldName'] = oldName
+    rb['newName'] = newName
+    response = requests.put(endpoint, json = json.dumps(rb))
+
+
+
 
 # testUserCreation('jake', url3)
 # testImgHandlerUrl("misbah_11_face.jpg")
 # testUserHandler()
-testGetSingleUser(11)
+# testGetSingleUser(11)
 # testDeleteSingleUser(16)
 # testSongModifier(11, 'misbah', url2)
 # testSongHandler(11)
 # testImgHandler(11)
 # testImgEncHandler() # i think this works, havent tried extracting the numpy data yet
 # testImgModifier(11, 'misbah')
+# testNameModifier(11, 'misballin', 'Misbah')
