@@ -11,6 +11,7 @@ def getEncoding(fileName) :
 # takes an image and returns the image encoding
 # MATH Explained:
 def encode_image(path):
+    print(path)
     img = cv2.cvtColor(cv2.imread(path), cv2.COLOR_BGR2RGB)
     img_encoding = face_rec.face_encodings(img)[0]
     return img_encoding

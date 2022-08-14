@@ -2,7 +2,7 @@ import json
 from flask import Flask, request
 from flask_restful import Api, Resource
 import query 
-from UserController import deleteUserData, addUser, modifyUserSong, modifyUserPhoto, getAllImgEncs, createImg, loadImg, modifyUserName
+from UserController import deleteUserData, addUser, modifyUserSong, modifyUserPhoto, getAllImgEncs, createImg, loadImg, modifyUserName, modifyUser
 from AwsHandler import getFile
 from flask_cors import CORS
 
@@ -39,7 +39,7 @@ class UserInstanceHandler(Resource) :
 class SongModifier(Resource) : 
     # works
     def put(self) :
-        data = json.loads(request.json)
+        data = request.json
         userID = data['userID']
         name = data['userName']
         yt_url = data['url']
@@ -78,13 +78,25 @@ class ImgModifier(Resource) :
         name = data['userName']
         modifyUserPhoto(name, userID, fileName)
 
+
 class NameModifier(Resource) : 
     def put (self) :
-        data = json.loads(request.json)
+        data = request.json
         name = data['newName']
         oldName = data['oldName']
         userID = data['userID']
         modifyUserName(name, oldName, userID)
+
+
+class ModifyUser(Resource) : 
+    def put(self) :
+        data = request.json
+        name = data["name"]
+        userID = data["userID"]
+        newName = data["newName"]
+        url = data["url"]
+        img = data["imgData"]
+        modifyUser(userID, name, newName, img, url)
 
 
 api.add_resource(UsersHandler, '/users')
@@ -97,6 +109,7 @@ api.add_resource(SongModifier, '/modify-song')
 api.add_resource(ImgEncHandler, '/encodings')
 api.add_resource(ImgModifier, '/modify-img')
 api.add_resource(NameModifier, '/modify-name')
+api.add_resource(ModifyUser, '/modify-user')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -205,3 +205,22 @@ code {
   height: 230px;
 }
 
+.edit-modal {
+  background-color: white;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10%;
+  box-shadow: 1.6px 3.2px 3.2px hsl(0deg 0% 0% / 0.45);
+  /* box-shadow: 4.7px 9.4px 9.4px hsl(0deg 0% 0% / 0.35); */
+  outline: none;
+  
+  width: 650px;
+  height: 550px;
+}
+
+.edit-title {
+  background: linear-gradient(to left, #f9d976, #f39f86 100%);
+  background-position: 0 100%;
+  background-size: 100% 100%;
+  background-repeat: repeat-x;
+}

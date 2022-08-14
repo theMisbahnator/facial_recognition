@@ -2,12 +2,13 @@ import axios from "axios";
 import React, { useState } from 'react'
 import "../index"
 import DeleteUser from "./DeleteUser";
+import EditUser from "./EditUser";
 import { FcFullTrash } from "react-icons/fc";
 
 
 const User = ({id, name, song_title, yt_url, img_url, last_updated, date_created, users, setUsers}) => {
-    const [url, setUrl] = useState("");
-    const [deleteState, setDeleteState] = useState(false); 
+    const [deleteState, setDeleteState] = useState(false);
+    const [editState, setEditState] = useState(false); 
     
   return (
     <span>
@@ -22,9 +23,10 @@ const User = ({id, name, song_title, yt_url, img_url, last_updated, date_created
                         <a href={yt_url} target="_blank"><p className="display-7">{song_title}</p></a>
                         <p className="container">
                             <div className="row justify-content-around">
-                                <button type="button" class="btn btn-warning col-3">Edit 📝</button>
+                                <button type="button" class="btn btn-warning col-3" onClick = {() => {setEditState(true)}}>Edit 📝</button>
                                 <button type="button" class="btn btn-danger col-3" onClick = {() => {setDeleteState(true)}} >Delete <FcFullTrash/></button>
                                 <DeleteUser name = {name} id = {id} deleteState = {deleteState} setDeleteState = {setDeleteState} users = {users} setUsers = {setUsers} />
+                                <EditUser name = {name} id = {id} editState = {editState} setEditState = {setEditState} users = {users} setUsers = {setUsers} />
                             </div>
                         </p>
                         <div class="card creation-details">

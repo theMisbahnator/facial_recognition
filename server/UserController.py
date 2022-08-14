@@ -121,6 +121,18 @@ def modifyUserName(name, oldName, userID) :
     query.sqlModifyName(userID, name, new_img_fn, new_img_enc_fn, new_mp3_fn)
 
 
+def modifyUser(userID, name, newName, imgData, url) : 
+    if imgData != "" :
+        print("new img data of size ", len(imgData))
+        data = createImg(imgData)
+        modifyUserPhoto(name, userID, data)
+    if url != "" :
+        print("new url", url) 
+        modifyUserSong(name, userID, url)
+    if newName != "" :
+        print("new name = ", newName)
+        modifyUserName(newName, name, userID)
+
     
 
 
