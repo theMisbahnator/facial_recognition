@@ -13,7 +13,5 @@ sauce.py
 # more secret stuff
 *.env
 
-# i have a lot of junk in here
-requirements.txt
 
 env
