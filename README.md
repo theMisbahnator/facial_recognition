@@ -25,34 +25,43 @@ gaining experience with Full Stack Development.
 Tryna have this hosted somehwere soon. 
 
 ### Dashboard
-
-
-### User Details
-
+![Dashboard](https://cdn.discordapp.com/attachments/819708434126995528/1011116488343687220/Screen_Shot_2022-08-21_at_10.35.01_PM.png)
 
 ### Search Feature
-
+![search feature](https://cdn.discordapp.com/attachments/819708434126995528/1011116621206671390/Screen_Shot_2022-08-21_at_10.36.18_PM.png)
 
 ### Add User
-
+![add user](https://cdn.discordapp.com/attachments/819708434126995528/1011116781420675082/Screen_Shot_2022-08-21_at_10.36.55_PM.png)
 
 ### Edit User
-
+![edit user](https://cdn.discordapp.com/attachments/819708434126995528/1011116936979038238/Screen_Shot_2022-08-21_at_10.37.33_PM.png)
 
 ### Input Validation
+There are input validation mechanisms in place for both the create and edit user functionality.
+
+#### Create user Validation
+- No fields are left blank
+- The youtube url provided is a proper link to a youtube video
+- The Name has a 20 character limit
+
+#### Edit user Validation
+- The youtube url provided is a proper link to a youtube video
+- The Name has a 20 character limit
+- Only one field needs to be filled when editing
 
 
 ### Delete User
-
+![Delete user](https://cdn.discordapp.com/attachments/819708434126995528/1011117058316062760/Screen_Shot_2022-08-21_at_10.38.02_PM.png)
 
 ## Backend 
-tryna have this hosted somehwere soon
 
 ### Setup Guide
-
+tryna have this hosted somehwere soon
 
 ### Overview 
 
+#### Syncing backend changes with frontend
+![sync user](https://cdn.discordapp.com/attachments/819708434126995528/1011117388906905640/Screen_Shot_2022-08-21_at_10.39.20_PM.png)
 
 ### endpoints
 
